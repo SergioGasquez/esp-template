@@ -41,7 +41,7 @@ fn init_heap() {
     let peripherals = Peripherals::take();
     {% else -%}
     let peripherals = Peripherals::take().unwrap();
-    {% endif %}
+    {% endif -%}
     {%- if mcu == "esp32" %}
     let system = peripherals.DPORT.split();
     {%- else %}
