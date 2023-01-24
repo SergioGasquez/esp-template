@@ -42,11 +42,11 @@ fn init_heap() {
     {% else -%}
     let peripherals = Peripherals::take().unwrap();
     {% endif -%}
-    {%- if mcu == "esp32" -%}
+    {% if mcu == "esp32" -%}
     let system = peripherals.DPORT.split();
-    {%- else -%}
+    {% else -%}
     let system = peripherals.SYSTEM.split();
-    {%- endif -%}
+    {% endif -%}
     let clocks = ClockControl::boot_defaults(system.clock_control).freeze();
 
     // Disable the RTC and TIMG watchdog timers
