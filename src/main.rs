@@ -4,8 +4,11 @@
 {% if alloc -%}
 extern crate alloc;
 {% endif -%}
-
+{% if mcu == "esp32c3" -%}
+use {{ mcu }}_hal::{clock::ClockControl, peripherals::Peripherals, prelude::*, timer::TimerGroup, Rtc};
+{% else -%}
 use {{ mcu }}_hal::{clock::ClockControl, pac::Peripherals, prelude::*, timer::TimerGroup, Rtc};
+{% endif %}
 use esp_backtrace as _;{% if mcu == "esp32s2" %}
 use xtensa_atomic_emulation_trap as _;{% endif %}
 {% if alloc %}#[global_allocator]
@@ -34,7 +37,11 @@ fn init_heap() {
 {% else -%}
 #[xtensa_lx_rt::entry]
 {% endif %}fn main() -> ! {
+    {% if mcu == "esp32c3" -%}
+    let peripherals = Peripherals::take();
+    {% else -%}
     let peripherals = Peripherals::take().unwrap();
+    {% endif %}
     {%- if mcu == "esp32" %}
     let system = peripherals.DPORT.split();
     {%- else %}
