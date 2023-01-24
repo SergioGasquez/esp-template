@@ -8,6 +8,8 @@ license = "MIT OR Apache-2.0"
 [dependencies]
 {% if mcu == "esp32" -%}
 {{ mcu }}-hal = "0.7.0"
+{% elsif mcu == "esp32c3" -%}
+{{ mcu }}-hal = { package = "{{ mcu }}-hal", git = "https://github.com/esp-rs/esp-hal.git", rev = "d29c4b1" }
 {% else -%}
 {{ mcu }}-hal = "0.4.0"
 {%- endif %}
@@ -16,7 +18,7 @@ esp-alloc = { version = "0.1.0", features = ["oom-handler"] }
 {%- endif %}
 esp-backtrace = { version = "0.4.0", features = ["{{ mcu }}", "panic-handler", "print-uart"] }
 {% if mcu == "esp32c3" -%}
-riscv-rt = { version = "0.10", optional = true }
+riscv-rt = { version = "0.11", optional = true }
 {%- else -%}
 {% if mcu == "esp32s2" -%}
 xtensa-atomic-emulation-trap = "0.3.0"
