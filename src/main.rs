@@ -5,7 +5,9 @@
 extern crate alloc;
 {% endif -%}
 {% if mcu == "esp32c3" -%}
-use {{ mcu }}_hal::{clock::ClockControl, peripherals::Peripherals, prelude::*, timer::TimerGroup, Rtc};
+use {{ mcu }}_hal::{
+    clock::ClockControl, peripherals::Peripherals, prelude::*, timer::TimerGroup, Rtc
+};
 {% else -%}
 use {{ mcu }}_hal::{clock::ClockControl, pac::Peripherals, prelude::*, timer::TimerGroup, Rtc};
 {% endif %}
