@@ -33,6 +33,7 @@
         "serayuzgur.crates",
         "mutantdino.resourcemonitor",
         "yzhang.markdown-all-in-one",
+        // TODO: See if its needed
         "webfreak.debug",
         "actboy168.tasks",
         "Wokwi.wokwi-vscode"
