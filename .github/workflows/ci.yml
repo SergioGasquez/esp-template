@@ -119,10 +119,11 @@ jobs:
         with:
           context: .
           tags: test-${{ matrix.board.target }}:latest
-          build-args: ESP_BOARD=${{ matrix.board.target }}
+          build-args: |
+            ESP_BOARD=${{ matrix.board.target }}
+            GITHUB_TOKEN=${${{ secrets.GITHUB_TOKEN }}}
           file: test-${{ matrix.board.target }}/.devcontainer/Dockerfile
           push: false
-          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run the build process with Docker (Xtensa)
         if: matrix.board.arch == 'xtensa'
         uses: addnab/docker-run-action@v3
