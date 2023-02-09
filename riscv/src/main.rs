@@ -38,7 +38,6 @@ fn init_heap() {
 }
 {% endif %}
 
-
 #[riscv_rt::entry]
 fn main() -> ! {
     let peripherals = Peripherals::take();
