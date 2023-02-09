@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   rust-checks:
-    name: cargo ${{ matrix.action.command }} - ${{ matrix.board }} (alloc=${{ matrix.alloc }})
+    name: cargo ${{ matrix.action.command }} - ${{ matrix.board.target }} (alloc=${{ matrix.alloc }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -44,7 +44,7 @@ jobs:
           - command: fmt
             args: -- --check
           - command: clippy
-            args: --no-deps -A clippy::empty_loop -A dead_code -- -D warnings
+            args: --no-deps -- -D warnings -A clippy::empty_loop -A dead_code
     steps:
       - uses: actions/checkout@v3
         with:
