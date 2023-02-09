@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "editor": "wokwi",
+    "parts": [
+        {
+            {% if mcu == "esp32c3" -%}
+            "type": "board-esp32-c3-devkitm-1",
+            {% elif mcu == "esp32c2" -%}
+            // Currently there is no support for ESP32-C2 in Wokwi
+            {%- endif %}
+            "id": "esp",
+            "top": 0.59,
+            "left": 0.67,
+            "attrs": {}
+        }
+    ],
+    "connections": [
+        [
+            "esp:TX0",
+            "$serialMonitor:RX",
+            "",
+            []
+        ],
+        [
+            "esp:RX0",
+            "$serialMonitor:TX",
+            "",
+            []
+        ]
+    ],
+    "serialMonitor": {
+        "display": "terminal"
+    }
+}

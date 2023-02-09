@@ -28,4 +28,6 @@ ignore = [
     ".dockerignore",
     ".gitpod.Dockerfile",
     ".gitpod.yml",
+    "diagram.json",
+    "wokwi.toml",
 ]
