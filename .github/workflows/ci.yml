@@ -101,7 +101,7 @@ jobs:
         if: steps.binaries.outcome != 'success'
         run: cargo install cargo-generate
       - name: Generate
-        run: cargo generate --path /home/runner/work/esp-template/esp-template/github-esp-template --name test-${{ matrix.board.target }} --vcs none --silent -d mcu=${{ matrix.board.target }} -d devcontainer=true -d alloc=false
+        run: cargo generate --path /home/runner/work/esp-template/esp-template/github-esp-template ${{ matrix.board.arch }} --name test-${{ matrix.board.target }} --vcs none --silent -d mcu=${{ matrix.board.target }} -d devcontainer=true -d alloc=false
       - name: Update ownership
         run: |
           sudo chown 1000:1000 -R test-${{ matrix.board.target }}
