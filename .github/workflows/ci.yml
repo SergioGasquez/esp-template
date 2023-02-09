@@ -121,7 +121,7 @@ jobs:
           tags: test-${{ matrix.board.target }}:latest
           build-args: |
             ESP_BOARD=${{ matrix.board.target }}
-            GITHUB_TOKEN=${${{ secrets.GITHUB_TOKEN }}}
+            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           file: test-${{ matrix.board.target }}/.devcontainer/Dockerfile
           push: false
       - name: Run the build process with Docker (Xtensa)
