@@ -1,10 +1,8 @@
 #![no_std]
 #![no_main]
-
-{%- if alloc -%}
+{% if alloc %}
 extern crate alloc;
-{%- endif %}
-
+{% endif %}
 use {{ mcu }}_hal::{
     clock::ClockControl, peripherals::Peripherals, prelude::*, timer::TimerGroup, Rtc,
 };
