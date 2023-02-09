@@ -47,6 +47,7 @@ RUN ARCH=$($HOME/.cargo/bin/rustup show | grep "Default host" | sed -e 's/.* //'
 RUN ${HOME}/.cargo/bin/espup install\
     --targets "${ESP_BOARD}" \
     --log-level debug \
+    --profile-minimal \
     --export-file /home/${CONTAINER_USER}/export-esp.sh \
     && rustup default esp
 
