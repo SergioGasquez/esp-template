@@ -123,7 +123,8 @@ jobs:
           file: test-${{ matrix.board.target }}/.devcontainer/Dockerfile
           push: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run the build process with Docker
+      - name: Run the build process with Docker (Xtensa)
+        if: matrix.board.arch == 'xtensa'
         uses: addnab/docker-run-action@v3
         with:
           image: test-${{ matrix.board.target }}:latest
@@ -131,3 +132,12 @@ jobs:
           run: |
             cd /home/esp/test-${{ matrix.board.target }}
             bash -c 'source /home/esp/export-esp.sh && cargo build'
+      - name: Run the build process with Docker (RISC-V)
+        if: matrix.board.arch == 'riscv'
+        uses: addnab/docker-run-action@v3
+        with:
+          image: test-${{ matrix.board.target }}:latest
+          options: -u esp -v ${{ github.workspace }}/test-${{ matrix.board.target }}:/home/esp/test-${{ matrix.board.target }}
+          run: |
+            cd /home/esp/test-${{ matrix.board.target }}
+            bash -c cargo build'
