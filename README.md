@@ -6,7 +6,10 @@ A minimalist template for use with [cargo-generate] to create `no_std` applicati
 To generate a project using this template:
 
 ```bash
-cargo generate https://github.com/esp-rs/esp-template
+# RISC-V targets (ESP32-C2, ESP32-C3)
+cargo generate https://github.com/esp-rs/esp-template riscv
+# Xtensa targets (ESP32, ESP32-S2, ESP32-s3)
+cargo generate https://github.com/esp-rs/esp-template xtensa
 ```
 
 After running the command, there will be a few prompts:
@@ -18,7 +21,7 @@ After running the command, there will be a few prompts:
    -  [GitHub Codespaces]
    -  [Gitpod]
 
-   Dev Containers also have integration with [Wokwi simulator] and allow flashing from the container using [web flash].
+   Dev Containers also have integration with [Wokwi simulator] via the [VS Code Wokwi extension] and allow flashing from the container using [web flash].
 
 For a more detailed explanation about the template see [Understanding esp-template] chapter of [The Rust on ESP Book].
 
@@ -28,6 +31,7 @@ For a more detailed explanation about the template see [Understanding esp-templa
 [GitHub Codespaces]: https://docs.github.com/en/codespaces/developing-in-codespaces/creating-a-codespace
 [Gitpod]: https://www.gitpod.io
 [Wokwi simulator]: https://wokwi.com/
+[VS Code Wokwi extension]: https://marketplace.visualstudio.com/items?itemName=wokwi.wokwi-vscode
 [web flash]: https://github.com/bjoernQ/esp-web-flash-server
 [Understanding esp-template]: https://esp-rs.github.io/book/writing-your-own-application/no-std-applications/understanding-esp-template.html
 [The Rust on ESP Book]: https://esp-rs.github.io/book/
