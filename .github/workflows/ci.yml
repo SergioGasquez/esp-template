@@ -141,4 +141,4 @@ jobs:
           options: -u esp -v ${{ github.workspace }}/test-${{ matrix.board.target }}:/home/esp/test-${{ matrix.board.target }}
           run: |
             cd /home/esp/test-${{ matrix.board.target }}
-            bash -c '/home/runner/.cargo/bin/cargo build'
+            bash -c '/home/esp/.cargo/bin/cargo build'
