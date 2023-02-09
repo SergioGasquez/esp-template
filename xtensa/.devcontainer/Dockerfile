@@ -26,7 +26,7 @@ WORKDIR /home/${CONTAINER_USER}
 # Install Rust nightly toolchain
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- \
     --default-toolchain nightly -y --profile minimal
-ENV PATH=${PATH}:/home/${CONTAINER_USER}/.cargo/bin:/home/${CONTAINER_USER}/opt/bin
+ENV PATH=${PATH}:/home/${CONTAINER_USER}/.cargo/bin
 
 # Install extra crates
 RUN ARCH=$($HOME/.cargo/bin/rustup show | grep "Default host" | sed -e 's/.* //') && \

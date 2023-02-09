@@ -23,6 +23,8 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- \
     --default-toolchain nightly -y --profile minimal  \
     --component rust-src clippy rustfmt \
     --target riscv32imc-unknown-none-elf
+ENV PATH=${PATH}:/home/${CONTAINER_USER}/.cargo/bin
+
 # Install extra crates
 RUN ARCH=$($HOME/.cargo/bin/rustup show | grep "Default host" | sed -e 's/.* //') && \
     curl -L "https://github.com/esp-rs/espflash/releases/latest/download/cargo-espflash-${ARCH}.zip" -o "${HOME}/.cargo/bin/cargo-espflash.zip" && \
