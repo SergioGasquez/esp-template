@@ -1,0 +1,25 @@
+[package]
+name = "{{ crate_name }}"
+version = "0.1.0"
+authors = ["{{ authors }}"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+{% if mcu == "esp32" -%}
+{{ mcu }}-hal = "0.8.0"
+{% else -%}
+{{ mcu }}-hal = "0.5.0"
+{% endif -%}
+{% if alloc -%}
+esp-alloc = { version = "0.1.0", features = ["oom-handler"] }
+{% endif -%}
+esp-backtrace = { version = "0.4.0", features = ["{{ mcu }}", "panic-handler", "print-uart"] }
+{% if mcu == "esp32s2" -%}
+xtensa-atomic-emulation-trap = "0.3.0"
+{% endif -%}
+xtensa-lx-rt = { version = "0.14.0", features = ["{{ mcu }}"], optional = true }
+
+[features]
+default = ["rt"]
+rt = ["xtensa-lx-rt"]

@@ -9,9 +9,6 @@ use {{ mcu }}_hal::{
     clock::ClockControl, peripherals::Peripherals, prelude::*, timer::TimerGroup, Rtc,
 };
 use esp_backtrace as _;
-{% if mcu == "esp32s2" -%}
-use xtensa_atomic_emulation_trap as _;
-{% endif %}
 
 {%- if alloc %}
 #[global_allocator]
@@ -41,33 +38,28 @@ fn init_heap() {
 }
 {% endif %}
 
-{%- if mcu == "esp32" or mcu == "esp32s2" or mcu == "esp32s3" -%}
-#[xtensa_lx_rt::entry]
-{%- else %}
+
 #[riscv_rt::entry]
-{%- endif %}
 fn main() -> ! {
     let peripherals = Peripherals::take();
-    {%- if mcu == "esp32" %}
-    let system = peripherals.DPORT.split();
-    {%- else %}
     let system = peripherals.SYSTEM.split();
-    {%- endif %}
     let clocks = ClockControl::boot_defaults(system.clock_control).freeze();
 
     // Disable the RTC and TIMG watchdog timers
     let mut rtc = Rtc::new(peripherals.RTC_CNTL);
     let timer_group0 = TimerGroup::new(peripherals.TIMG0, &clocks);
     let mut wdt0 = timer_group0.wdt;
+    {% if mcu == "esp32c3" -%}
     let timer_group1 = TimerGroup::new(peripherals.TIMG1, &clocks);
     let mut wdt1 = timer_group1.wdt;
-
+    {% endif -%}
     {% if mcu == "esp32c3" -%}
     rtc.swd.disable();
     {% endif -%}
     rtc.rwdt.disable();
     wdt0.disable();
+    {% if mcu == "esp32c3" -%}
     wdt1.disable();
-
+    {% endif -%}
     loop {}
 }

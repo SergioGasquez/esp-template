@@ -26,7 +26,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        board: ["esp32", "esp32s2", "esp32s3", "esp32c3"]
+        board:
+          - target: esp32
+            arch: xtensa
+          - target: esp32s2
+            arch: xtensa
+          - target: esp32s3
+            arch: xtensa
+          - target: esp32c2
+            arch: riscv
+          - target: esp32c3
+            arch: riscv
         alloc: ["true", "false"]
         action:
           - command: build
@@ -34,24 +44,24 @@ jobs:
           - command: fmt
             args: -- --check
           - command: clippy
-            args: --no-deps
+            args: --no-deps -A clippy::empty_loop -A dead_code -- -D warnings
     steps:
       - uses: actions/checkout@v3
         with:
           path: /home/runner/work/esp-template/esp-template/github-esp-template
       - name: Setup | Rust
-        if: matrix.board == 'esp32c3'
+        if: matrix.board.arch == 'riscv'
         uses: dtolnay/rust-toolchain@v1
         with:
           target: riscv32imc-unknown-none-elf
           toolchain: nightly
           components: clippy, rustfmt, rust-src
       - name: Setup | Rust
-        if: matrix.board == 'esp32' || matrix.board == 'esp32s2' || matrix.board == 'esp32s3'
+        if: matrix.board.arch == 'xtensa'
         uses: esp-rs/xtensa-toolchain@v1.5
         with:
           default: true
-          buildtargets: ${{ matrix.board }}
+          buildtargets: ${{ matrix.board.target }}
           ldproxy: false
       - uses: Swatinem/rust-cache@v2
       - name: Setup | cargo-generate (binaries)
@@ -65,7 +75,7 @@ jobs:
         if: steps.binaries.outcome != 'success'
         run: cargo install cargo-generate
       - name: Generate
-        run: cargo generate --path /home/runner/work/esp-template/esp-template/github-esp-template --name test --vcs none --silent -d mcu=${{ matrix.board }} -d devcontainer=false -d alloc=${{ matrix.alloc }}
+        run: cargo generate --path /home/runner/work/esp-template/esp-template/github-esp-template ${{ matrix.board.arch }} --name test --vcs none --silent -d mcu=${{ matrix.board.target }} -d devcontainer=false -d alloc=${{ matrix.alloc }}
       - name: cargo ${{ matrix.action.command }}
         run: cd test; cargo ${{ matrix.action.command }} ${{ matrix.action.args }}
   docker-checks:
@@ -91,22 +101,22 @@ jobs:
         if: steps.binaries.outcome != 'success'
         run: cargo install cargo-generate
       - name: Generate
-        run: cargo generate --path /home/runner/work/esp-template/esp-template/github-esp-template --name test-${{ matrix.board }} --vcs none --silent -d mcu=${{ matrix.board }} -d devcontainer=true -d alloc=false
+        run: cargo generate --path /home/runner/work/esp-template/esp-template/github-esp-template --name test-${{ matrix.board.target }} --vcs none --silent -d mcu=${{ matrix.board.target }} -d devcontainer=true -d alloc=false
       - name: Update ownership
         run: |
-          sudo chown 1000:1000 -R test-${{ matrix.board }}
+          sudo chown 1000:1000 -R test-${{ matrix.board.target }}
       - uses: docker/build-push-action@v4
         with:
           context: .
-          tags: test-${{ matrix.board }}:latest
-          build-args: ESP_BOARD=${{ matrix.board }}
-          file: test-${{ matrix.board }}/.devcontainer/Dockerfile
+          tags: test-${{ matrix.board.target }}:latest
+          build-args: ESP_BOARD=${{ matrix.board.target }}
+          file: test-${{ matrix.board.target }}/.devcontainer/Dockerfile
           push: false
       - name: Run the build process with Docker
         uses: addnab/docker-run-action@v3
         with:
-          image: test-${{ matrix.board }}:latest
-          options: -u esp -v ${{ github.workspace }}/test-${{ matrix.board }}:/home/esp/test-${{ matrix.board }}
+          image: test-${{ matrix.board.target }}:latest
+          options: -u esp -v ${{ github.workspace }}/test-${{ matrix.board.target }}:/home/esp/test-${{ matrix.board.target }}
           run: |
-            cd /home/esp/test-${{ matrix.board }}
+            cd /home/esp/test-${{ matrix.board.target }}
             bash -c 'source /home/esp/export-esp.sh && cargo build'

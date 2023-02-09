@@ -12,6 +12,7 @@ ARG ESP_BOARD=esp32
 ARG INSTALL_RUST_TOOLCHAIN=install-rust-toolchain.sh
 
 # Install dependencies
+# TODO: Update dependencies
 RUN apt-get update \
     && apt-get install -y git curl gcc clang ninja-build libudev-dev unzip xz-utils\
     python3 python3-pip python3-venv libusb-1.0-0 libssl-dev pkg-config libtinfo5 libpython2.7 \
@@ -31,7 +32,7 @@ ADD --chown=${CONTAINER_USER}:${CONTAINER_GROUP} \
 
 RUN chmod a+x ${INSTALL_RUST_TOOLCHAIN} \
     && ./${INSTALL_RUST_TOOLCHAIN} \
-    --extra-crates "ldproxy cargo-espflash wokwi-server web-flash" \
+    --extra-crates "cargo-espflash web-flash" \
     --export-file /home/${CONTAINER_USER}/export-esp.sh \
     --build-target "${ESP_BOARD}" \
     && rustup component add clippy rustfmt

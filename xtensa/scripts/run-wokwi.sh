@@ -26,17 +26,10 @@ elif [ "${CODESPACE_NAME}" != "" ]; then
     export WOKWI_HOST=${CODESPACE_NAME}-9012.githubpreview.dev
 fi
 
-export ESP_ARCH=
-{%- if mcu == "esp32" or mcu == "esp32s2" or mcu == "esp32s3" -%}
-xtensa-{{ mcu }}-none-elf
-{%- else -%}
-riscv32imac-unknown-none-elf
-{%- endif %}
-
 # TODO: Update with your Wokwi Project
 export WOKWI_PROJECT_ID=""
 if [ "${WOKWI_PROJECT_ID}" == "" ]; then
-    wokwi-server --chip {{ mcu }} target/${ESP_ARCH}/${BUILD_MODE}/{{ crate_name }}
+    wokwi-server --chip {{ mcu }} target/xtensa-{{ mcu }}-none-elf/${BUILD_MODE}/{{ crate_name }}
 else
-    wokwi-server --chip {{ mcu }} --id ${WOKWI_PROJECT_ID} target/${ESP_ARCH}/${BUILD_MODE}/{{ crate_name }}
+    wokwi-server --chip {{ mcu }} --id ${WOKWI_PROJECT_ID} target/xtensa-{{ mcu }}-none-elf/${BUILD_MODE}/{{ crate_name }}
 fi

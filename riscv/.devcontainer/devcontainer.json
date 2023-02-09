@@ -32,8 +32,10 @@
     "mutantdino.resourcemonitor",
     "yzhang.markdown-all-in-one",
     "webfreak.debug",
-    "actboy168.tasks"
+    "actboy168.tasks",
+    "Wokwi.wokwi-vscode"
   ],
+  // TODO: Update required ports
   "forwardPorts": [
     9012,
     9333,
