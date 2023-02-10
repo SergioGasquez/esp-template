@@ -14,7 +14,7 @@ ARG GITHUB_TOKEN
 # TODO: Update dependencies
 RUN apt-get update \
     && apt-get install -y git curl llvm-dev libclang-dev clang unzip \
-    libusb-1.0-0 libssl-dev pkg-config libpython2.7 \
+    libusb-1.0-0 libssl-dev libudev-dev pkg-config libpython2.7 \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
 
 # Set users
@@ -22,9 +22,9 @@ RUN adduser --disabled-password --gecos "" ${CONTAINER_USER}
 USER ${CONTAINER_USER}
 WORKDIR /home/${CONTAINER_USER}
 
-# Install Rust nightly toolchain
+# Install rustup
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- \
-    --default-toolchain nightly -y --profile minimal
+    --default-toolchain none -y --profile minimal
 
 # Update envs
 ENV PATH=${PATH}:/home/${CONTAINER_USER}/.cargo/bin
