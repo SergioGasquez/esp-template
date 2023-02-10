@@ -28,7 +28,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- \
 
 # Update envs
 ENV PATH=${PATH}:/home/${CONTAINER_USER}/.cargo/bin
-RUN [ -z "${GITHUB_TOKEN}" ] && export GITHUB_TOKEN=${GITHUB_TOKEN}
+ENV GITHUB_TOKEN=${GITHUB_TOKEN}
 
 # Install extra crates
 RUN ARCH=$($HOME/.cargo/bin/rustup show | grep "Default host" | sed -e 's/.* //') && \
@@ -44,7 +44,8 @@ RUN ARCH=$($HOME/.cargo/bin/rustup show | grep "Default host" | sed -e 's/.* //'
     chmod u+x "${HOME}/.cargo/bin/web-flash"
 
 # Install Xtensa Rust
-RUN ${HOME}/.cargo/bin/espup install\
+RUN [ -z "${GITHUB_TOKEN}" ] && unset GITHUB_TOKEN  \
+    && ${HOME}/.cargo/bin/espup install\
     --targets "${ESP_BOARD}" \
     --log-level debug \
     --profile-minimal \
