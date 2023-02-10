@@ -28,7 +28,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- \
 
 # Update envs
 ENV PATH=${PATH}:/home/${CONTAINER_USER}/.cargo/bin
-ENV GITHUB_TOKEN=${GITHUB_TOKEN}
+RUN [ -z "${GITHUB_TOKEN}" ] && export GITHUB_TOKEN=${GITHUB_TOKEN}
 
 # Install extra crates
 RUN ARCH=$($HOME/.cargo/bin/rustup show | grep "Default host" | sed -e 's/.* //') && \
