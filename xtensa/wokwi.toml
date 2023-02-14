@@ -1,5 +1,5 @@
 [wokwi]
 version = 1
 gdbServerPort = 3333
-elf = "target/xtensa-{{ mcu }}-elf/release/{{ crate_name }}"
-firmware = "target/xtensa-{{ mcu }}-elf/release/{{ crate_name }}"
+elf = "target/xtensa-{{ mcu }}-none-elf/debug/{{ crate_name }}"
+firmware = "target/xtensa-{{ mcu }}-none-elf/debug/{{ crate_name }}"
