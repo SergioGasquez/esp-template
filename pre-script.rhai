@@ -93,7 +93,7 @@ if !advanced {
 // Snippets - These should be short & self-contained, not depending on other snippets existing where possible.
 //
 
-variable::set("alloc_snippet", 
+variable::set("alloc_snippet",
 `
 extern crate alloc;
 use core::mem::MaybeUninit;
@@ -114,13 +114,13 @@ fn init_heap() {
 variable::set("esp_wifi_snippet",
 `
 let timer = ${mcu}_hal::${meta.esp_wifi_timer};
-let _init = esp_wifi::initialize(
-    esp_wifi::EspWifiInitFor::${meta.esp_wifi_init},
-    timer,
-    ${mcu}_hal::rng::Rng::new(peripherals.RNG),
-    system.radio_clock_control,
-    &clocks,
-)
-.unwrap();
+    let _init = esp_wifi::initialize(
+        esp_wifi::EspWifiInitFor::${meta.esp_wifi_init},
+        timer,
+        ${mcu}_hal::rng::Rng::new(peripherals.RNG),
+        system.radio_clock_control,
+        &clocks,
+    )
+    .unwrap();
 `
 );
